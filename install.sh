@@ -27,6 +27,8 @@ else
     echo "      Already cloned, pulling latest..."
     git -C "$NODE_DIR" pull
 fi
+echo "      Applying path fixes to nodes.py..."
+"$PYTHON" "$SCRIPT_DIR/fix_nodes.py" "$NODE_DIR/nodes.py"
 # open3d has no aarch64 wheel and is not imported by any node code — skip it
 grep -v '^open3d' "$NODE_DIR/requirements.txt" | "$PYTHON" -m pip install -q -r /dev/stdin
 
