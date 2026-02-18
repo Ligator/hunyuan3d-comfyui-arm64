@@ -48,7 +48,7 @@ For a full technical breakdown see [TECHNICAL.md](TECHNICAL.md).
 | `Hunyuan3D-vae-v2-1-fp16.ckpt` | 626 MB | Mesh VAE decoder |
 | `hunyuan3d-paintpbr-v2-1/` | ~1.3 GB | PBR texture painting (1.3B params) |
 
-All models are from [tencent/Hunyuan3D-2.1](https://huggingface.co/tencent/Hunyuan3D-2.1) on HuggingFace. The install script downloads them automatically.
+All models are from [tencent/Hunyuan3D-2.1](https://huggingface.co/tencent/Hunyuan3D-2.1) on HuggingFace. The install script downloads them automatically — no login or license acceptance required.
 
 ## Credits
 
