@@ -37,3 +37,19 @@ LoadImage → Remove Background → 3D Shape Generation → Mesh Cleanup
 ```
 
 For a full technical breakdown see [TECHNICAL.md](TECHNICAL.md).
+
+## Models
+
+| Model | Size | Purpose |
+|-------|------|---------|
+| `hunyuan3d-dit-v2-1-fp16.ckpt` | 6.9 GB | Shape generation (DiT, 3B params) |
+| `Hunyuan3D-vae-v2-1-fp16.ckpt` | 626 MB | Mesh VAE decoder |
+| `hunyuan3d-paintpbr-v2-1/` | ~1.3 GB | PBR texture painting (1.3B params) |
+
+All models are from [tencent/Hunyuan3D-2.1](https://huggingface.co/tencent/Hunyuan3D-2.1) on HuggingFace. The install script downloads them automatically.
+
+## Credits
+
+- [Tencent Hunyuan3D-2.1](https://github.com/Tencent-Hunyuan/Hunyuan3D-2.1) — the model
+- [visualbruno/ComfyUI-Hunyuan3d-2-1](https://github.com/visualbruno/ComfyUI-Hunyuan3d-2-1) — the ComfyUI wrapper
+- [danielgatis/rembg](https://github.com/danielgatis/rembg) — background removal
