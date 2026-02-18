@@ -29,6 +29,35 @@ python setup.py install
 
 ---
 
+## Using the Workflow
+
+1. Restart ComfyUI after running `install.sh`
+2. Open ComfyUI → click the **Workflows** menu → load **Image_to_3D_with_BgRemoval**
+3. In the **LoadImage** node, select your input photo
+4. Click **Queue Prompt**
+
+### Pipeline overview
+
+```
+LoadImage
+   └─► SimpleRemBG (rembg U2Net)         ← auto bg removal, outputs RGBA
+          ├─► Hy3DMeshGenerator           ← 3B DiT model, 25-step diffusion
+          │      └─► Hy3D21VAEDecode      ← marching cubes at octree res 256
+          │             └─► PostprocessMesh (cleanup, 200k face limit)
+          │                    ├─► Hy3D21ExportMesh → 3D/Hy3D_shape_*.glb
+          │                    └─► Hy3D21MeshUVWrap (xatlas unwrap)
+          │                           └─► Hy3DMultiViewsGenerator  ← 6-view PBR paint
+          │                                  └─► Hy3DBakeMultiViews → Hy3DInPaint
+          │                                         └─► Hy21_Mesh_*.glb + Preview3D
+          └─► Hy3DMultiViewsGenerator (reference RGBA for texture conditioning)
+```
+
+Output files saved to `ComfyUI/output/`:
+- `3D/Hy21_Mesh_*.glb` — fully textured 3D model with PBR materials
+- `3D/Hy3D_shape_*.glb` — untextured shape only (intermediate output)
+
+---
+
 ## Pipeline breakdown
 
 ### 1. Background removal (`comfyui_rembg_simple.py`)
