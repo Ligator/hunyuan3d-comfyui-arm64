@@ -9,7 +9,7 @@ set -e
 #   ./install.sh /home/user/ComfyUI /home/user/comfyui-env/bin/python
 # ─────────────────────────────────────────────────────────────
 
-COMFYUI_DIR="$(cd "${1:?Usage: ./install.sh <comfyui_path> <python_executable>}" && pwd)"
+COMFYUI_DIR="${1:?Usage: ./install.sh <comfyui_path> <python_executable>}"
 PYTHON="${2:?Usage: ./install.sh <comfyui_path> <python_executable>}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
