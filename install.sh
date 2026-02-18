@@ -27,7 +27,8 @@ else
     echo "      Already cloned, pulling latest..."
     git -C "$NODE_DIR" pull
 fi
-"$PYTHON" -m pip install -q -r "$NODE_DIR/requirements.txt"
+# open3d has no aarch64 wheel and is not imported by any node code — skip it
+grep -v '^open3d' "$NODE_DIR/requirements.txt" | "$PYTHON" -m pip install -q -r /dev/stdin
 
 # ── 2. Prebuilt C++ extensions ─────────────────────────────────
 echo "[2/6] Installing prebuilt wheels (custom_rasterizer + mesh_inpaint_processor)..."
