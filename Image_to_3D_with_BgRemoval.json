@@ -1,0 +1,358 @@
+{
+  "id": "hunyuan3d-image-to-3d-bgrm",
+  "revision": 0,
+  "last_node_id": 110,
+  "last_link_id": 220,
+  "nodes": [
+    {
+      "id": 100,
+      "type": "LoadImage",
+      "pos": [-1400, 700],
+      "size": [315, 314],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {"name": "IMAGE", "type": "IMAGE", "links": [200], "slot_index": 0},
+        {"name": "MASK", "type": "MASK", "links": []}
+      ],
+      "properties": {"cnr_id": "comfy-core", "Node name for S&R": "LoadImage"},
+      "widgets_values": ["example.png", "image"]
+    },
+    {
+      "id": 101,
+      "type": "SimpleRemBG",
+      "pos": [-1020, 700],
+      "size": [210, 58],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {"name": "image", "type": "IMAGE", "link": 200}
+      ],
+      "outputs": [
+        {"name": "image_rgba", "type": "IMAGE", "links": [201, 202], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "SimpleRemBG"},
+      "widgets_values": []
+    },
+    {
+      "id": 4,
+      "type": "Hy3D21VAELoader",
+      "pos": [-758, 678],
+      "size": [310, 58],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {"name": "vae", "type": "HY3DVAE", "links": [61], "slot_index": 0}
+      ],
+      "properties": {"aux_id": "visualbruno/ComfyUI-Hunyuan3d-2-1", "Node name for S&R": "Hy3D21VAELoader"},
+      "widgets_values": ["Hunyuan3D-vae-v2-1-fp16.ckpt"]
+    },
+    {
+      "id": 37,
+      "type": "Hy3DMeshGenerator",
+      "pos": [-764, 864],
+      "size": [330, 178],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {"name": "image", "type": "IMAGE", "link": 201}
+      ],
+      "outputs": [
+        {"name": "latents", "type": "HY3DLATENT", "links": [62], "slot_index": 0}
+      ],
+      "properties": {"aux_id": "visualbruno/ComfyUI-Hunyuan3d-2-1", "Node name for S&R": "Hy3DMeshGenerator"},
+      "widgets_values": ["hunyuan3d-dit-v2-1-fp16.ckpt", 25, 7.5, 0, "randomize", "sdpa"]
+    },
+    {
+      "id": 9,
+      "type": "Hy3D21VAEDecode",
+      "pos": [-400, 674],
+      "size": [310, 290],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {"name": "vae", "type": "HY3DVAE", "link": 61},
+        {"name": "latents", "type": "HY3DLATENT", "link": 62},
+        {"name": "pipeline", "type": "HY3D21PIPELINE", "link": null}
+      ],
+      "outputs": [
+        {"name": "trimesh", "type": "TRIMESH", "links": [80], "slot_index": 0}
+      ],
+      "properties": {"aux_id": "visualbruno/ComfyUI-Hunyuan3d-2-1", "Node name for S&R": "Hy3D21VAEDecode"},
+      "widgets_values": [1.01, 256, 64000, 0, "mc", true, false]
+    },
+    {
+      "id": 43,
+      "type": "Hy3D21PostprocessMesh",
+      "pos": [-62, 679],
+      "size": [360, 178],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {"name": "trimesh", "type": "TRIMESH", "link": 80}
+      ],
+      "outputs": [
+        {"name": "trimesh", "type": "TRIMESH", "links": [84, 86], "slot_index": 0}
+      ],
+      "properties": {"aux_id": "visualbruno/ComfyUI-Hunyuan3d-2-1", "Node name for S&R": "Hy3D21PostprocessMesh"},
+      "widgets_values": [true, true, true, 200000, false]
+    },
+    {
+      "id": 44,
+      "type": "Hy3D21ExportMesh",
+      "pos": [334, 678],
+      "size": [300, 130],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {"name": "trimesh", "type": "TRIMESH", "link": 84}
+      ],
+      "outputs": [
+        {"name": "glb_path", "type": "STRING", "links": [], "slot_index": 0}
+      ],
+      "properties": {"aux_id": "visualbruno/ComfyUI-Hunyuan3d-2-1", "Node name for S&R": "Hy3D21ExportMesh"},
+      "widgets_values": ["3D/Hy3D_shape", "glb", true]
+    },
+    {
+      "id": 45,
+      "type": "Hy3D21MeshUVWrap",
+      "pos": [-623, 1270],
+      "size": [260, 26],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {"name": "trimesh", "type": "TRIMESH", "link": 86}
+      ],
+      "outputs": [
+        {"name": "trimesh", "type": "TRIMESH", "links": [87], "slot_index": 0}
+      ],
+      "properties": {"aux_id": "visualbruno/ComfyUI-Hunyuan3d-2-1", "Node name for S&R": "Hy3D21MeshUVWrap"},
+      "widgets_values": []
+    },
+    {
+      "id": 19,
+      "type": "Hy3D21CameraConfig",
+      "pos": [-759, 1472],
+      "size": [400, 136],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {"name": "camera_config", "type": "HY3D21CAMERA", "links": [17, 19], "slot_index": 0}
+      ],
+      "properties": {"aux_id": "visualbruno/ComfyUI-Hunyuan3d-2-1", "Node name for S&R": "Hy3D21CameraConfig"},
+      "widgets_values": ["0, 90, 180, 270, 0, 180", "0, 0, 0, 0, 90, -90", "1, 0.5, 1, 0.5, 1, 1", 1.1]
+    },
+    {
+      "id": 20,
+      "type": "Hy3DMultiViewsGenerator",
+      "pos": [-316, 1440],
+      "size": [360, 266],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {"name": "trimesh", "type": "TRIMESH", "link": 87},
+        {"name": "camera_config", "type": "HY3D21CAMERA", "link": 17},
+        {"name": "image", "type": "IMAGE", "link": 202}
+      ],
+      "outputs": [
+        {"name": "pipeline", "type": "HY3DPIPELINE", "links": [18], "slot_index": 0},
+        {"name": "albedo", "type": "IMAGE", "links": [20, 88], "slot_index": 1},
+        {"name": "mr", "type": "IMAGE", "links": [21], "slot_index": 2},
+        {"name": "positions", "type": "IMAGE", "links": [], "slot_index": 3},
+        {"name": "normals", "type": "IMAGE", "links": [], "slot_index": 4},
+        {"name": "camera_config", "type": "HY3D21CAMERA", "links": [], "slot_index": 5}
+      ],
+      "properties": {"aux_id": "visualbruno/ComfyUI-Hunyuan3d-2-1", "Node name for S&R": "Hy3DMultiViewsGenerator"},
+      "widgets_values": [768, 10, 3.0, 1024, false, 0, "randomize"]
+    },
+    {
+      "id": 21,
+      "type": "Hy3DBakeMultiViews",
+      "pos": [113, 1446],
+      "size": [260, 170],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {"name": "pipeline", "type": "HY3DPIPELINE", "link": 18},
+        {"name": "camera_config", "type": "HY3D21CAMERA", "link": 19},
+        {"name": "albedo", "type": "IMAGE", "link": 20},
+        {"name": "mr", "type": "IMAGE", "link": 21}
+      ],
+      "outputs": [
+        {"name": "pipeline", "type": "HY3DPIPELINE", "links": [103], "slot_index": 0},
+        {"name": "albedo", "type": "NPARRAY", "links": [104], "slot_index": 1},
+        {"name": "albedo_mask", "type": "NPARRAY", "links": [105], "slot_index": 2},
+        {"name": "mr", "type": "NPARRAY", "links": [106], "slot_index": 3},
+        {"name": "mr_mask", "type": "NPARRAY", "links": [107], "slot_index": 4},
+        {"name": "albedo_texture", "type": "IMAGE", "links": [], "slot_index": 5},
+        {"name": "mr_texture", "type": "IMAGE", "links": [], "slot_index": 6}
+      ],
+      "properties": {"aux_id": "visualbruno/ComfyUI-Hunyuan3d-2-1", "Node name for S&R": "Hy3DBakeMultiViews"},
+      "widgets_values": []
+    },
+    {
+      "id": 49,
+      "type": "Hy3DInPaint",
+      "pos": [420, 1444],
+      "size": [290, 162],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {"name": "pipeline", "type": "HY3DPIPELINE", "link": 103},
+        {"name": "albedo", "type": "NPARRAY", "link": 104},
+        {"name": "albedo_mask", "type": "NPARRAY", "link": 105},
+        {"name": "mr", "type": "NPARRAY", "link": 106},
+        {"name": "mr_mask", "type": "NPARRAY", "link": 107}
+      ],
+      "outputs": [
+        {"name": "albedo", "type": "IMAGE", "links": [111], "slot_index": 0},
+        {"name": "mr", "type": "IMAGE", "links": [112], "slot_index": 1},
+        {"name": "trimesh", "type": "TRIMESH", "links": [], "slot_index": 2},
+        {"name": "output_glb_path", "type": "STRING", "links": [119], "slot_index": 3}
+      ],
+      "properties": {"aux_id": "visualbruno/ComfyUI-Hunyuan3d-2-1", "Node name for S&R": "Hy3DInPaint"},
+      "widgets_values": ["Hy21_Mesh"]
+    },
+    {
+      "id": 27,
+      "type": "Preview3D",
+      "pos": [710, 1478],
+      "size": [650, 602],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model_file",
+          "type": "*",
+          "link": 119
+        },
+        {"name": "camera_info", "type": "LOAD3D_CAMERA", "link": null},
+        {"name": "bg_image", "type": "IMAGE", "link": null}
+      ],
+      "outputs": [],
+      "properties": {"cnr_id": "comfy-core", "Node name for S&R": "Preview3D"},
+      "widgets_values": ["", ""]
+    },
+    {
+      "id": 46,
+      "type": "SaveImage",
+      "pos": [112, 1664],
+      "size": [290, 290],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {"name": "images", "type": "IMAGE", "link": 88}
+      ],
+      "outputs": [],
+      "properties": {"cnr_id": "comfy-core", "Node name for S&R": "SaveImage"},
+      "widgets_values": ["MV_albedo"]
+    },
+    {
+      "id": 50,
+      "type": "PreviewImage",
+      "pos": [730, 1137],
+      "size": [290, 290],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {"name": "images", "type": "IMAGE", "link": 111}
+      ],
+      "outputs": [],
+      "properties": {"cnr_id": "comfy-core", "Node name for S&R": "PreviewImage"},
+      "widgets_values": []
+    },
+    {
+      "id": 51,
+      "type": "PreviewImage",
+      "pos": [1060, 1137],
+      "size": [290, 290],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {"name": "images", "type": "IMAGE", "link": 112}
+      ],
+      "outputs": [],
+      "properties": {"cnr_id": "comfy-core", "Node name for S&R": "PreviewImage"},
+      "widgets_values": []
+    }
+  ],
+  "links": [
+    [200, 100, 0, 101, 0, "IMAGE"],
+    [201, 101, 0, 37,  0, "IMAGE"],
+    [202, 101, 0, 20,  2, "IMAGE"],
+    [61,  4,   0, 9,   0, "HY3DVAE"],
+    [62,  37,  0, 9,   1, "HY3DLATENT"],
+    [80,  9,   0, 43,  0, "TRIMESH"],
+    [84,  43,  0, 44,  0, "TRIMESH"],
+    [86,  43,  0, 45,  0, "TRIMESH"],
+    [87,  45,  0, 20,  0, "TRIMESH"],
+    [17,  19,  0, 20,  1, "HY3D21CAMERA"],
+    [19,  19,  0, 21,  1, "HY3D21CAMERA"],
+    [18,  20,  0, 21,  0, "HY3DPIPELINE"],
+    [20,  20,  1, 21,  2, "IMAGE"],
+    [21,  20,  2, 21,  3, "IMAGE"],
+    [88,  20,  1, 46,  0, "IMAGE"],
+    [103, 21,  0, 49,  0, "HY3DPIPELINE"],
+    [104, 21,  1, 49,  1, "NPARRAY"],
+    [105, 21,  2, 49,  2, "NPARRAY"],
+    [106, 21,  3, 49,  3, "NPARRAY"],
+    [107, 21,  4, 49,  4, "NPARRAY"],
+    [111, 49,  0, 50,  0, "IMAGE"],
+    [112, 49,  1, 51,  0, "IMAGE"],
+    [119, 49,  3, 27,  0, "STRING"]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "1. Input: Load & Remove Background",
+      "bounding": [-1430, 645, 680, 200],
+      "color": "#8A8",
+      "font_size": 20,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "2. Mesh Generation",
+      "bounding": [-790, 445, 1400, 520],
+      "color": "#3f789e",
+      "font_size": 20,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "3. Texture Generation & 3D Preview",
+      "bounding": [-790, 1059, 2150, 1040],
+      "color": "#8A4A",
+      "font_size": 20,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.5,
+      "offset": [1100, -400]
+    },
+    "frontendVersion": "1.22.2"
+  },
+  "version": 0.4
+}
