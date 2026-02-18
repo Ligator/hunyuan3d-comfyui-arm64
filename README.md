@@ -48,24 +48,14 @@ Install Python dependencies (use your ComfyUI Python env):
 /path/to/comfyui-env/bin/pip install -r ComfyUI-Hunyuan3d-2-1/requirements.txt
 ```
 
-### 2. Compile the C++ extensions from source
+### 2. Install the prebuilt C++ extensions
 
-No prebuilt aarch64 wheels exist. You must compile both extensions. Make sure `nvcc` and `g++` are available.
-
-**custom_rasterizer** (CUDA extension):
+Prebuilt wheels for **Python 3.12, CUDA 13, aarch64** are included in the `wheels/` folder of this repo. Just install them directly — no compilation needed.
 
 ```bash
-cd ComfyUI/custom_nodes/ComfyUI-Hunyuan3d-2-1/hy3dpaint/custom_rasterizer
-TORCH_CUDA_ARCH_LIST="12.1" /path/to/comfyui-env/bin/python setup.py install
-```
-
-> Replace `12.1` with your GPU's compute capability. For GB10 Blackwell it is `12.1`.
-
-**mesh_inpaint_processor** (C++ pybind11 extension):
-
-```bash
-/path/to/comfyui-env/bin/python \
-  ComfyUI/custom_nodes/ComfyUI-Hunyuan3d-2-1/hy3dpaint/DifferentiableRenderer/setup.py install
+/path/to/comfyui-env/bin/pip install \
+  wheels/custom_rasterizer-0.1-cp312-cp312-linux_aarch64.whl \
+  wheels/mesh_inpaint_processor-0.0.0-cp312-cp312-linux_aarch64.whl
 ```
 
 Verify both load correctly (torch must be imported first):
@@ -73,6 +63,14 @@ Verify both load correctly (torch must be imported first):
 ```bash
 /path/to/comfyui-env/bin/python -c "import torch; import custom_rasterizer; import mesh_inpaint_processor; print('OK')"
 ```
+
+> **Different Python/CUDA version?** You'll need to compile from source:
+> ```bash
+> cd ComfyUI/custom_nodes/ComfyUI-Hunyuan3d-2-1/hy3dpaint/custom_rasterizer
+> TORCH_CUDA_ARCH_LIST="12.1" /path/to/comfyui-env/bin/python setup.py install
+> cd ../DifferentiableRenderer
+> /path/to/comfyui-env/bin/python setup.py install
+> ```
 
 ### 3. Download the models
 
