@@ -2,6 +2,8 @@
 
 Upload any photo → automatic background removal → textured 3D model → interactive viewer, running locally on ARM64 Linux with CUDA 13 (tested on NVIDIA DGX Spark / GB10 Blackwell).
 
+![Workflow screenshot](hunyuan3d-image-to-3d-workflow.png)
+
 ## Requirements
 
 - ComfyUI installed
