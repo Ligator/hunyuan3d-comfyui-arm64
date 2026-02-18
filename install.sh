@@ -9,7 +9,7 @@ set -e
 #   ./install.sh /home/user/ComfyUI /home/user/comfyui-env/bin/python
 # ─────────────────────────────────────────────────────────────
 
-COMFYUI_DIR="${1:?Usage: ./install.sh <comfyui_path> <python_executable>}"
+COMFYUI_DIR="$(cd "${1:?Usage: ./install.sh <comfyui_path> <python_executable>}" && pwd)"
 PYTHON="${2:?Usage: ./install.sh <comfyui_path> <python_executable>}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -57,6 +57,7 @@ echo "[5/6] Downloading models from HuggingFace (~9 GB total)..."
 
 DIT_DEST="$COMFYUI_DIR/models/diffusion_models/hunyuan3d-dit-v2-1-fp16.ckpt"
 VAE_DEST="$COMFYUI_DIR/models/vae/Hunyuan3D-vae-v2-1-fp16.ckpt"
+mkdir -p "$COMFYUI_DIR/models/diffusion_models" "$COMFYUI_DIR/models/vae"
 
 "$PYTHON" - <<EOF
 import huggingface_hub, shutil, os
